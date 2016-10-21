@@ -1,0 +1,35 @@
+{
+  "name": "dungeon",
+  "version": "0.1.1",
+  "description": "Dungeon game built with React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mschultz4/dungeon.git"
+  },
+  "author": "Matt Schultz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mschultz4/dungeon/issues"
+  },
+  "homepage": "https://github.com/mschultz4/dungeon#readme",
+  "dependencies": {
+    "lodash": "^4.16.4",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+   "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.25.0",
+    "html-webpack-plugin": "^2.22.0",
+    "react-bootstrap": "^0.30.3",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2"
+  }
+}
