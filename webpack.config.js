@@ -7,7 +7,7 @@ var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-    entry: "./src/app.js",
+    entry: "./src/dungeon.js",
     output: {
         path: path.join(__dirname, "dist"),
         filename: "bundle.js"
