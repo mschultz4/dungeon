@@ -1,16 +1,20 @@
-let React    = require('react'),
+let React = require('react'),
     ReactDOM = require('react-dom'),
-    _        = require('lodash');
+    _ = require('lodash');
+
+"use strict";
 
 let Game = React.createClass({
     getInitialState: function () {
         let startingPosition = { x: 2, y: 2 }
         return {
             board: generateBoard(startingPosition),
-            currentPosition: startingPosition,
-            health: 100,
-            weapon: 'sword',
-            level: 1
+            player: {
+                currentPosition: startingPosition,
+                health: 100,
+                weapon: {name: 'sword', strength: '1'},
+                level: 1
+            }
         };
     },
     componentWillMount: function () {
@@ -27,53 +31,56 @@ let Game = React.createClass({
             <div>
                 <Board board={this.state.board}/>
                 <Stats
-                    health={this.state.health}
-                    level={this.state.level}
-                    weapon={this.state.weapon}
+                    health={this.state.player.health}
+                    level={this.state.player.level}
+                    weapon={this.state.player.weapon.name}
                     />
             </div>
         );
 
     },
     _move: function (keyCode) {
-        let y = this.state.currentPosition.y,
-            x = this.state.currentPosition.x,
-            board = _.clone(this.state.board);
+        let player = Object.assign({}, this.state.player),
+            y      = player.currentPosition.y,
+            x      = player.currentPosition.x,
+            board  = _.clone(this.state.board);
 
         switch (keyCode) {
             case 38:
                 if (this.state.board[y - 1][x].open) {
-                    board[y][x].player = false;
-                    board[y - 1][x].player = true;
+                    board[y][x].fill = '';
+                    board[y - 1][x].fill = 'player';
                     y -= 1;
                 }
                 break;
             case 40:
                 if (this.state.board[y + 1][x].open) {
-                    board[y][x].player = false;
-                    board[y + 1][x].player = true;
+                    board[y][x].fill = '';
+                    board[y + 1][x].fill = 'player';
                     y += 1;
                 }
                 break;
             case 39:
                 if (this.state.board[y][x + 1].open) {
-                    board[y][x].player = false;
-                    board[y][x + 1].player = true;
+                    board[y][x].fill = '';
+                    board[y][x + 1].fill = 'player';
                     x += 1;
                 }
                 break;
             case 37:
                 if (this.state.board[y][x - 1].open) {
-                    board[y][x].player = false;
-                    board[y][x - 1].player = true;
+                    board[y][x].fill = '';
+                    board[y][x - 1].fill = 'player';
                     x -= 1;
                 }
                 break;
 
         }
 
+        player.currentPosition = {y: y, x: x};
+
         this.setState({
-            currentPosition: { y: y, x: x },
+            player: player,
             board: board
         });
 
@@ -85,7 +92,7 @@ let Board = function (props) {
     props.board.forEach(function (row, index) {
         let cells = [];
         row.forEach(function (cell, index) {
-            cells.push(<Cell key={index} open={cell.open} player={cell.player}/>);
+            cells.push(<Cell key={index} open={cell.open} fill={cell.fill}/>);
         });
         rows.push(<tr key={index}>{cells}</tr>);
     });
@@ -93,7 +100,13 @@ let Board = function (props) {
 }
 
 let Cell = function (props) {
-    return (<td className={`${props.open ? "open" : "closed"} ${props.player ? "player" : ""}`}></td>);
+    let fill = '';
+    switch(props.fill){
+       case 'player':
+            fill = 'P';
+            break; 
+    }
+    return (<td className={props.open ? "open" : "closed"}>{fill}</td>);
 };
 
 let Stats = function (props) {
@@ -120,38 +133,38 @@ ReactDOM.render(<Game/>, document.getElementById('game'));
 
 function generateBoard(pos) {
     let board = [[
-        { open: false, player: false },
-        { open: false, player: false },
-        { open: false, player: false },
-        { open: false, player: false },
-        { open: false, player: false }
+        { open: false, fill: '' },
+        { open: false, fill: '' },
+        { open: false, fill: '' },
+        { open: false, fill: '' },
+        { open: false, fill: '' }
     ], [
-            { open: false, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: false, player: false }
+            { open: false, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: false, fill: '' }
         ], [
-            { open: false, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: false, player: false }
+            { open: false, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: false, fill: '' }
         ], [
-            { open: false, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: true, player: false },
-            { open: false, player: false }
+            { open: false, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: true, fill: '' },
+            { open: false, fill: '' }
         ], [
-            { open: false, player: false },
-            { open: false, player: false },
-            { open: false, player: false },
-            { open: false, player: false },
-            { open: false, player: false }
+            { open: false, fill: '' },
+            { open: false, fill: '' },
+            { oen: false, fill: '' },
+            { open: false, fill: '' },
+            { open: false, fill: '' }
         ]];
 
-    board[pos.y][pos.x].player = true;
+    board[pos.y][pos.x].fill = 'player';
 
     return board;
 }
